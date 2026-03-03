@@ -1,0 +1,1717 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>akirakha.com</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXX6MCFHVH"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-VXX6MCFHVH');
+    </script>
+    <meta name="google-site-verification" content="ZtxxiEpPIth8U_5oDmA5wJ5cTRvuTf-javuN-tF600g" />
+    <style>
+:root{
+--bg1:#1e3a8a;
+--bg2:#6d28d9;
+--bg3:#9333ea;
+
+--glass:rgba(255,255,255,0.06);
+--glass-strong:rgba(255,255,255,0.16);
+--border:rgba(255,255,255,0.18);
+
+--accent:#60a5fa;
+--accent2:#a855f7;
+--red:#ef4444;
+
+--text:#ffffff;
+--muted:#cbd5e1;
+
+--ease:cubic-bezier(.4,0,.2,1);
+}
+
+/* ================= RESET ================= */
+
+*{
+box-sizing:border-box;
+font-family:Inter,system-ui,sans-serif;
+-webkit-font-smoothing:antialiased;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+background:linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3));
+background-size:200% 200%;
+animation:gradientFlow 18s ease infinite;
+color:var(--text);
+min-height:100vh;
+overflow-x:hidden;
+}
+
+@keyframes gradientFlow{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar{
+background:var(--glass);
+border-bottom:1px solid var(--border);
+padding:14px 24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:
+0 10px 40px rgba(0,0,0,0.3),
+inset 0 1px 1px rgba(255,255,255,0.1);
+position:relative;
+z-index:20;
+transition:background .3s ease;
+}
+
+.toolbar:hover{
+background:var(--glass-strong);
+}
+
+.menu-btn{
+font-size:22px;
+cursor:pointer;
+margin-right:15px;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+width:240px;
+background:rgba(20,20,35,0.95);
+height:100vh;
+position:fixed;
+top:0;
+left:-240px;
+transition:left .4s ease;
+padding-top:80px;
+z-index:30;
+border-right:1px solid var(--border);
+}
+
+.sidebar a{
+padding:18px;
+display:block;
+text-decoration:none;
+color:white;
+border-bottom:1px solid rgba(255,255,255,0.05);
+transition:background .3s ease, padding-left .3s ease;
+}
+
+.sidebar a:hover{
+background:rgba(255,255,255,0.12);
+padding-left:26px;
+}
+
+/* ================= OVERLAY ================= */
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.55);
+opacity:0;
+visibility:hidden;
+transition:opacity .3s ease;
+z-index:25;
+}
+
+.overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+padding:50px 20px;
+max-width:1150px;
+margin:0 auto;
+}
+
+/* ================= BUTTON ================= */
+
+button{
+border:none;
+padding:12px 20px;
+border-radius:20px;
+font-weight:600;
+cursor:pointer;
+transition:all .25s ease;
+background:linear-gradient(135deg,var(--accent),var(--accent2));
+color:white;
+box-shadow:
+0 5px 20px rgba(168,85,247,0.35),
+inset 0 1px 2px rgba(255,255,255,0.2);
+}
+
+button:hover:not(:disabled){
+transform:translateY(-3px);
+box-shadow:0 10px 30px rgba(168,85,247,0.5);
+}
+
+button:active{
+transform:translateY(0);
+}
+
+button.secondary{
+background:var(--glass-strong);
+border:1px solid var(--border);
+}
+
+button.delete{
+background:var(--red);
+}
+
+/* ================= GRID ================= */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+gap:26px;
+margin-top:30px;
+}
+
+/* ================= CARD ================= */
+
+.card{
+position:relative;
+overflow:hidden;
+background:var(--glass);
+border:1px solid var(--border);
+padding:20px;
+border-radius:24px;
+box-shadow:
+0 15px 50px rgba(0,0,0,0.35),
+inset 0 1px 1px rgba(255,255,255,0.12);
+transition:transform .3s ease, box-shadow .3s ease;
+opacity:0;
+transform:translateY(30px);
+animation:fadeUp .8s ease forwards;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:
+0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ===== ĐÃ BỎ floatCard và light sweep ===== */
+
+.card h3{
+margin:0;
+font-size:18px;
+}
+
+.card .meta{
+font-size:13px;
+color:var(--muted);
+margin-top:6px;
+}
+
+/* ================= LESSON ================= */
+
+.lesson{
+max-width:750px;
+margin:50px auto;
+padding:30px;
+background:var(--glass);
+border-radius:28px;
+border:1px solid var(--border);
+box-shadow:
+0 25px 80px rgba(0,0,0,0.4);
+text-align:center;
+animation:fadeUp .8s ease;
+}
+
+.lesson .big-word{
+font-size:42px;
+font-weight:800;
+margin:10px 0;
+}
+
+/* ================= MODAL ================= */
+
+.modal-backdrop{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.55);
+display:none;
+justify-content:center;
+align-items:flex-start;
+padding-top:70px;
+overflow-y:auto;
+z-index:50;
+}
+
+.modal{
+background:rgba(255,255,255,0.1);
+border:1px solid var(--border);
+border-radius:28px;
+padding:28px;
+width:100%;
+max-width:800px;
+box-shadow:
+0 35px 100px rgba(0,0,0,0.45);
+animation:modalOpen .5s ease;
+}
+
+@keyframes modalOpen{
+from{
+opacity:0;
+transform:translateY(-40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* ================= INPUT ================= */
+
+input[type=text],
+textarea,
+select{
+width:100%;
+padding:12px;
+border-radius:14px;
+border:1px solid var(--border);
+background:rgba(255,255,255,0.06);
+color:white;
+transition:border .3s ease, box-shadow .3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+outline:none;
+border:1px solid var(--accent);
+box-shadow:0 0 15px rgba(96,165,250,0.5);
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+text-align:center;
+padding:40px 0;
+margin-top:70px;
+font-size:14px;
+color:var(--muted);
+border-top:1px solid rgba(255,255,255,0.1);
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar{
+width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+background:linear-gradient(var(--accent),var(--accent2));
+border-radius:10px;
+}
+
+/* ================= FADE ================= */
+
+@keyframes fadeUp{
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+    </style>
+</head>
+<body>
+
+
+
+    <div class="sidebar" id="sidebar">
+        <a href="index.html">Home</a>
+        <a href="guide.html">Video Hướng Dẫn</a>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <div class="toolbar">
+        <div style="display:flex; align-items:center;">
+            <div class="menu-btn" id="menu-btn" onclick="toggleMenu()">☰</div>
+            akirakha
+        </div>
+
+        <div id="user-info" style="display: none;">
+            <img id="user-avatar" src="" alt="Avatar" onclick="goProfile()">
+            <span id="user-name" onclick="goProfile()"></span>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div id="lesson-area"></div> 
+        
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <h2></h2>
+            <div style="display:flex; gap: 8px;">
+                <button id="btnManageData" class="secondary">Upload - Download</button>
+                <button id="btnNew">New +</button>
+            </div>
+        </div>
+
+        <div id="topics" class="grid"></div>
+        <div id="no-topics" class="empty" style="display:none">
+        Welcome to version 4.0
+        </div>
+    </div>
+
+    <div id="dataModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal" style="max-width: 380px;">
+            <h2 style="margin-top: 0;">Upload - Download</h2>
+            <p class="mini">Xuất để sao lưu lên máy tính của bạn</p>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                <button id="btnExportAllData" type="button">⬇️ Download All (.json)</button>
+                <button id="btnImportData" type="button" class="secondary">⬆️ Upload (.json)</button>
+                <input type="file" id="fileImport" accept=".json" style="display: none;" />
+            </div>
+            <div style="text-align: right; margin-top: 15px;">
+                <button class="secondary" onclick="closeDataModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+    <div id="modal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true">
+        <h2 id="modalTitle">New</h2>
+
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:220px">
+            <label>Unit</label>
+            <input id="topicTitle" type="text" placeholder="Ví dụ: Animals, Food..." />
+            </div>
+            <div id="wordCountControl" style="width:140px;min-width:120px">
+            <label>Số lượng từ ban đầu</label>
+            <select id="wordCount">
+                <option value="1">1</option>
+                <option value="5" selected>5</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            </div>
+        </div>
+        
+        <div style="margin-top: 12px;">
+            <p class="mini" style="font-style: italic;">(Lưu ý: Chỉ cần điền một trong 2 trường **Từ tiếng Anh** hoặc **Ảnh** để từ được lưu. Dòng trống không điền sẽ bị bỏ qua khi lưu.)</p>
+        </div>
+
+        <div id="wordsArea" style="margin-top:8px"></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <div>
+            <button id="btnAddMoreWord" class="secondary" type="button">+ Thêm 1 từ (Thủ công)</button>
+            </div>
+            <div style="display:flex;gap:8px">
+            <button class="secondary" id="btnCancel">Cancel</button>
+            <button id="btnSaveTopic">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="control footer"> 
+        <footer>akirakha version mx.4.0</footer>
+        <footer>© Copyright belongs to Akira Kha.</footer>
+    </div>  
+<script>
+    // --- KHAI BÁO CỐ ĐỊNH ---
+    function goProfile() { window.location.href = "profile.html"; }
+    function toggleMenu(){
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+        if(sidebar.style.left === "0px"){
+            sidebar.style.left = "-220px";
+            overlay.style.display = "none";
+        } else {
+            sidebar.style.left = "0px";
+            overlay.style.display = "block";
+        }
+    }
+    
+    // --- VARIABLES VÀ SETUP ---
+    const LS_KEY = 'vocab_topics_v1_v2'; 
+    let topics = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    let imageSearchWindow = null; // Biến lưu trữ cửa sổ pop-up
+
+    const topicsEl = document.getElementById('topics');
+    const noTopicsEl = document.getElementById('no-topics');
+    const lessonArea = document.getElementById('lesson-area');
+    const modal = document.getElementById('modal');
+    const dataModal = document.getElementById('dataModal'); 
+    const topicTitle = document.getElementById('topicTitle');
+    const wordCount = document.getElementById('wordCount');
+    const wordCountControl = document.getElementById('wordCountControl');
+    const wordsArea = document.getElementById('wordsArea');
+    const btnNew = document.getElementById('btnNew');
+    const btnManageData = document.getElementById('btnManageData'); 
+    const btnExportAllData = document.getElementById('btnExportAllData'); 
+    const btnImportData = document.getElementById('btnImportData'); 
+    const fileImport = document.getElementById('fileImport'); 
+    const btnCancel = document.getElementById('btnCancel');
+    const btnSaveTopic = document.getElementById('btnSaveTopic');
+    const btnAddMoreWord = document.getElementById('btnAddMoreWord');
+
+    let currentTopicIndex = -1; 
+    let autoAddInputAttached = false; 
+
+    function saveTopics(){
+        try {
+            localStorage.setItem(LS_KEY, JSON.stringify(topics));
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                alert('⚠️ LỖI LƯU TRỮ: Đã hết dung lượng Local Storage của trình duyệt! Vui lòng sử dụng tính năng "Xuất dữ liệu" để sao lưu và sau đó xóa bớt chủ đề cũ.');
+            } else {
+                alert('Lỗi khi lưu dữ liệu: ' + e.message);
+            }
+        }
+    }
+
+    // --- HÀM XỬ LÝ ẢNH (NÉN VÀ GIẢM KÍCH THƯỚC) ---
+    function compressImage(imgBase64, maxWidth, maxHeight, quality) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                // 1. Logic Thay đổi Kích thước (Resizing)
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext('2d');
+                // Vẽ lại ảnh với kích thước mới
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // 2. Logic Nén Chất lượng (Compression) - Xuất ra Base64 JPEG
+                // Dùng image/jpeg và chất lượng 0.7 để giảm dung lượng file
+                const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                resolve(compressedBase64);
+            };
+            img.onerror = () => {
+                // Nếu ảnh bị lỗi, trả về ảnh gốc để tránh mất dữ liệu
+                resolve(imgBase64); 
+            };
+            img.src = imgBase64;
+        });
+    }
+
+    // --- HÀM XUẤT K/NHẬP DỮ LIỆU A ---
+    
+    function openDataModal(){
+        dataModal.style.display = 'flex';
+        dataModal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDataModal(){
+        dataModal.style.display = 'none';
+        dataModal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+    }
+
+    // HÀM XUẤT TỪNG CHỦ ĐỀ                                                                                                                                                                                                                                                                                                                                                                                             
+    function exportSingleTopic(topicIndex) {
+        const t = topics[topicIndex];
+        // Dữ liệu chỉ là mảng chứa 1 chủ đề
+        const dataToExport = [t]; 
+        const dataStr = JSON.stringify(dataToExport, null, 2); 
+        const blob = new Blob([dataStr], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        // Tên file theo yêu cầu: NameChuDe.json. Loại bỏ ký tự đặc biệt và khoảng trắng.
+        const cleanTitle = t.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        a.download = `${cleanTitle}.json`;
+        a.href = url;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        alert(`Đã xuất chủ đề "${t.title}" thành công! Vui lòng kiểm tra thư mục Tải xuống (Downloads).`);
+    }
+
+    // HÀM XUẤT TẤT CẢ CHỦ ĐỀ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   akirakha's web
+    function exportAllData(){
+        if(topics.length === 0){
+            alert('Không có dữ liệu để xuất!');
+            return;
+        }
+        
+        const dataStr = JSON.stringify(topics, null, 2); 
+        const blob = new Blob([dataStr], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        // Tên file đề xuất chung
+        const date = new Date().toISOString().slice(0, 10);
+        a.download = `vocab_backup_${date}.json`;
+        a.href = url;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        alert(`Đã xuất TẤT CẢ ${topics.length} chủ đề thành công! Vui lòng kiểm tra thư mục Tải xuống (Downloads).`);
+        closeDataModal();
+    }
+
+
+    function importData(event){
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedTopics = JSON.parse(e.target.result);
+                if (!Array.isArray(importedTopics) || importedTopics.some(t => !t.title || !Array.isArray(t.words))) {
+                    throw new Error("Invalid structure");
+                }
+                
+                // *** ĐÃ SỬA: GỠ BỎ HỘP THOẠI CONFIRM VÀ LUÔN THÊM VÀO ĐỂ TRÁNH MẤT DỮ LIỆU CŨ ***
+                const countBefore = topics.length;
+                topics.push(...importedTopics); // Luôn thêm (Append) dữ liệu mới vào dữ liệu hiện có
+                
+                alert(`Đã nhập thành công ${importedTopics.length} chủ đề mới vào dữ liệu hiện có. Tổng cộng: ${countBefore + importedTopics.length} chủ đề.`);
+                // *** KẾT THÚC SỬA ***
+                
+                saveTopics();
+                renderTopics();
+                closeDataModal();
+
+            } catch (error) {
+                alert('⚠️ Lỗi: File không đúng định dạng JSON hoặc cấu trúc không hợp lệ.');
+            } finally {
+                // Reset input file để có thể chọn lại cùng một file sau khi lỗi
+                fileImport.value = '';
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // --- HÀM TẠO FILE WORD ---
+    function downloadWord(topicIndex){
+        const t = topics[topicIndex];
+        let htmlContent = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head><meta charset='utf-8'><title>${t.title}</title>
+            <style>
+                table, th, td { border: 1px solid black; border-collapse: collapse; }
+                th, td { padding: 8px; }
+            </style>
+            </head>
+            <body>
+                <h1>Chủ đề: ${t.title}</h1>
+                <p>Tổng số từ: ${t.words.length}</p>
+                <table style='width: 100%;'>
+                    <thead>
+                        <tr style='background-color: #f2f2f2;'>
+                            <th>STT</th>
+                            <th>Từ tiếng Anh</th>
+                            <th>Nghĩa tiếng Việt</th>
+                            <th>Hình ảnh (Base64 URL)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        t.words.forEach((w, idx) => {
+            // Lọc các ký tự có thể gây lỗi trong Word.
+            const cleanEn = (w.en || '(Không có từ)').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const cleanVi = (w.vi || 'Không có nghĩa').replace(/</g, '&lt;').replace(/</g, '&gt;');
+            const cleanImg = w.img ? 'Có hình ảnh (Base64 URL quá dài để hiển thị)' : 'Không';
+            htmlContent += `
+                <tr>
+                    <td style='text-align: center;'>${idx + 1}</td>
+                    <td style='font-weight: bold;'>${cleanEn}</td>
+                    <td>${cleanVi}</td>
+                    <td>${cleanImg}</td>
+                </tr>
+            `;
+        });
+        htmlContent += `
+                    </tbody>
+                </table>
+                <p style="margin-top: 30px;">Tạo bởi Ứng dụng Học Từ Vựng.</p>
+            </body>
+            </html>
+        `;
+
+        const filename = `${t.title.replace(/ /g, '_')}_vocab.doc`;
+        const link = document.createElement('a');
+        const blob = new Blob(['\ufeff', htmlContent], {
+            type: 'application/msword;charset=utf-8'
+        });
+
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+
+    // --- RENDER VÀ QUẢN LÝ CHỦ ĐỀ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ---  akirakha's web
+    function renderTopics(){
+        topicsEl.innerHTML = '';
+        if(!topics.length){
+            noTopicsEl.style.display = 'block';
+            return;
+        }
+        noTopicsEl.style.display = 'none';
+        topics.forEach((t, idx)=>{
+            const card = document.createElement('div'); card.className='card';
+            const h = document.createElement('h3'); h.textContent = t.title;
+            const meta = document.createElement('div'); meta.className='meta'; meta.textContent = t.words.length + ' từ';
+            const btnGroup = document.createElement('div'); btnGroup.style.marginTop='6px'; btnGroup.style.display='flex'; btnGroup.style.gap='8px'; btnGroup.style.flexWrap='wrap';
+            
+            const openBtn = document.createElement('button'); openBtn.textContent='Mở'; openBtn.onclick = ()=>openTopic(idx);
+            const editBtn = document.createElement('button'); editBtn.textContent='Sửa'; editBtn.className='secondary'; editBtn.onclick = ()=>openEditModal(idx);
+            const downloadWordBtn = document.createElement('button'); downloadWordBtn.textContent='Tải Word'; downloadWordBtn.className='secondary'; downloadWordBtn.onclick = ()=>downloadWord(idx);
+            const downloadJsonBtn = document.createElement('button'); downloadJsonBtn.textContent='Tải JSON'; downloadJsonBtn.className='secondary'; downloadJsonBtn.onclick = ()=>exportSingleTopic(idx);
+            const delBtn = document.createElement('button'); delBtn.textContent='Xóa'; delBtn.className='delete'; delBtn.onclick = ()=>{ 
+                if(confirm(`Xóa chủ đề "${t.title}"?`)){ 
+                    topics.splice(idx,1); saveTopics(); renderTopics(); lessonArea.innerHTML=''; 
+                }
+            }
+            
+            btnGroup.appendChild(openBtn); 
+            btnGroup.appendChild(editBtn); 
+            btnGroup.appendChild(downloadWordBtn); 
+            btnGroup.appendChild(downloadJsonBtn);
+            btnGroup.appendChild(delBtn);
+            
+            card.appendChild(h); card.appendChild(meta); card.appendChild(btnGroup);
+            topicsEl.appendChild(card);
+        })
+    }
+
+    // --- LOGIC XỬ LÝ PHÍM MŨI TÊN TRONG MODAL INPUT (GIỮ NGUYÊN) ---
+    function handleModalKeydown(e) {
+        // Chỉ xử lý các phím mũi tên
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        
+        const modalEl = document.getElementById('modal');
+        // Lấy tất cả input .en và .vi đang có trong wordsArea
+        const focusableInputs = Array.from(modalEl.querySelectorAll('#wordsArea .en, #wordsArea .vi'));
+        if (focusableInputs.length === 0) return;
+
+        const currentFocused = document.activeElement;
+        const currentIndex = focusableInputs.indexOf(currentFocused);
+
+        if (currentIndex === -1) return;
+        
+        let nextIndex = -1;
+        
+        // Logic di chuyển: Lên/Trái -> -1, Xuống/Phải -> +1
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            nextIndex = (currentIndex + 1);
+            if(nextIndex >= focusableInputs.length) nextIndex = -1; // Ngăn di chuyển ra ngoài
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            nextIndex = (currentIndex - 1);
+            if(nextIndex < 0) nextIndex = -1; // Ngăn di chuyển ra ngoài
+        }
+
+        if (nextIndex >= 0) {
+            e.preventDefault(); // Ngăn cuộn trang
+            focusableInputs[nextIndex].focus();
+        }
+    }
+
+    // Attach listener khi modal mở
+    function attachModalNavigation() {
+        // Gắn listener vào document, chỉ xử lý khi modal mở.
+        document.addEventListener('keydown', handleModalKeydown);
+    }
+
+    // Detach listener khi modal đóng
+    function detachModalNavigation() {
+        document.removeEventListener('keydown', handleModalKeydown);
+    }
+    // --- KẾT THÚC LOGIC PHÍM MŨI TÊN ---
+
+    // --- MODAL CONTROLS ---
+
+    function openCreateModal(){
+        currentTopicIndex = -1;
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('modalTitle').textContent = 'Tạo chủ đề mới';
+        topicTitle.value = '';
+        wordCountControl.style.display='block';
+        
+        // Reset count và render input
+        wordCount.value = '5';
+        buildWordInputs(parseInt(wordCount.value,10));
+        
+        btnSaveTopic.onclick = createNewTopicSaveHandler;
+        autoAddInputAttached = false; 
+
+        attachModalNavigation(); // *** GỌI HÀM ATTACH ***
+    }
+
+    function openEditModal(idx){
+        currentTopicIndex = idx;
+        const topic = topics[idx];
+        
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('modalTitle').textContent = `Chỉnh sửa: ${topic.title}`;
+        topicTitle.value = topic.title;
+        wordCountControl.style.display='none';
+
+        wordsArea.innerHTML = '';
+        topic.words.forEach(w => addSingleWordInput(w));
+        // Thêm một dòng trống để cho phép thêm mới ngay
+        addSingleWordInput(); 
+
+        btnSaveTopic.onclick = saveEditTopicHandler;
+        autoAddInputAttached = false; 
+        
+        attachModalNavigation(); // *** GỌI HÀM ATTACH ***
+    }
+
+
+    function closeModal(){
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+        wordsArea.innerHTML = '';
+        currentTopicIndex = -1;
+        btnSaveTopic.onclick = createNewTopicSaveHandler;
+        autoAddInputAttached = false;
+        
+        // Đóng cửa sổ pop-up tìm kiếm ảnh nếu nó đang mở
+        if (imageSearchWindow && !imageSearchWindow.closed) {
+            imageSearchWindow.close();
+            imageSearchWindow = null;
+        }
+
+        detachModalNavigation(); // *** GỌI HÀM DETACH ***
+    }
+
+    function buildWordInputs(n){
+        wordsArea.innerHTML = '';
+        for(let i=0;i<n;i++) addSingleWordInput();
+        // Thêm 1 dòng trống dự phòng để kích hoạt auto-add
+        if (n > 0) addSingleWordInput(); 
+    }
+    
+    // --- HÀM THÊM TỪ ĐƠN (GIỮ NGUYÊN) ---
+    function addSingleWordInput(prefill = {}) {
+        const div = document.createElement('div'); 
+        div.className='word-item';
+        
+        // Cột Trái (Text Inputs)
+        const left = document.createElement('div'); 
+        left.className = 'left-content';
+
+        // 1. Nhóm input Tiếng Anh + Nút Tìm Ảnh
+        const enGroup = document.createElement('div');
+        enGroup.style.display = 'flex';
+        enGroup.style.gap = '6px';
+
+        const enInput = document.createElement('input');
+        enInput.placeholder='Từ tiếng Anh (Ví dụ: Cat)';
+        enInput.type='text';
+        enInput.className='en';
+        enInput.style.flex = '1';
+
+        // Nút TÌM ẢNH GOOGLE
+        const searchImgBtn = document.createElement('button');
+        searchImgBtn.textContent = '🖼️';
+        searchImgBtn.className = 'secondary';
+        searchImgBtn.style.width = '40px';
+        searchImgBtn.style.padding = '8px 4px';
+        searchImgBtn.title = 'Tìm ảnh trên Google (Mở cửa sổ Pop-up)';
+        searchImgBtn.onclick = (e) => {
+            e.preventDefault();
+            const word = enInput.value.trim();
+            if (word) {
+                const searchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
+                // Cấu hình cửa sổ pop-up nhỏ
+                const windowFeatures = 'width=600,height=500,resizable=yes,scrollbars=yes';
+
+                if (imageSearchWindow && !imageSearchWindow.closed) {
+                    // Cửa sổ đã mở, chỉ cần thay đổi URL và focus
+                    imageSearchWindow.location.href = searchUrl;
+                    imageSearchWindow.focus();
+                } else {
+                    // Mở cửa sổ mới
+                    imageSearchWindow = window.open(searchUrl, 'ImageSearchPopup', windowFeatures);
+                }
+            } else {
+                alert('Vui lòng nhập Từ tiếng Anh trước.');
+            }
+        };
+
+        enGroup.appendChild(enInput);
+        enGroup.appendChild(searchImgBtn);
+
+        const viInput = document.createElement('input');
+        viInput.placeholder='Nghĩa tiếng Việt (Ví dụ: Con mèo)';
+        viInput.type='text';
+        viInput.className='vi';
+        
+        enInput.value = prefill.en || '';
+        viInput.value = prefill.vi || '';
+        
+        left.appendChild(enGroup); // Thêm nhóm input Tiếng Anh đã có nút Tìm Ảnh
+        left.appendChild(viInput);
+        
+        // Cột Phải (Image Controls)
+        const imgWrap = document.createElement('div'); 
+        imgWrap.className = 'img-controls upload-controls'; 
+        
+        const fileInput = document.createElement('input');
+        fileInput.type='file';
+        fileInput.accept='image/*';
+        fileInput.className='file';
+        
+        // Đã thay đổi từ <img> sang DIV để hiển thị text
+        const thumbSlot = document.createElement('div');
+        thumbSlot.className='thumb';
+        thumbSlot.tabIndex = 0; // Để có thể nhận sự kiện dán
+        
+        // Tạo <img> bên trong div, nếu có ảnh
+        const thumbImg = document.createElement('img');
+        thumbImg.alt='Ảnh minh họa';
+        thumbImg.src = prefill.img || '';
+
+        if (prefill.img) {
+            thumbSlot.appendChild(thumbImg);
+        } else {
+            thumbSlot.textContent = '(Chưa có ảnh)';
+        }
+
+
+        // Thêm chỉ dẫn Dán Ảnh
+        const pasteTip = document.createElement('div');
+        pasteTip.className = 'paste-tip';
+        pasteTip.textContent = 'Ấn Ctrl+V / Cmd+V để dán ảnh đã copy';
+        
+        // Nhóm nút xóa
+        const buttonGroup = document.createElement('div');
+        buttonGroup.style.display = 'flex';
+        buttonGroup.style.gap = '8px';
+        buttonGroup.style.marginTop = '8px';
+
+        // Nút xóa ảnh
+        const clearImgBtn = document.createElement('button');
+        clearImgBtn.textContent = 'Xóa ảnh';
+        clearImgBtn.className = 'secondary';
+        clearImgBtn.style.flex = '1';
+        clearImgBtn.onclick = ()=> {
+             thumbImg.src = ''; // Clear src của thẻ img con
+             thumbSlot.innerHTML = ''; // Clear thẻ img con
+             thumbSlot.textContent = '(Chưa có ảnh)';
+             fileInput.value = ''; // Reset input file
+        };
+
+        // Nút Xóa dòng từ
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Xóa dòng';
+        removeBtn.className='delete'; // Dùng class 'delete' để nổi bật
+        removeBtn.style.flex = '1';
+        removeBtn.onclick = ()=> { 
+            if(confirm('Bạn có chắc muốn xóa dòng từ này?')) {
+                div.remove();
+            }
+        };
+        
+        buttonGroup.appendChild(clearImgBtn);
+        buttonGroup.appendChild(removeBtn);
+
+        imgWrap.appendChild(fileInput);
+        imgWrap.appendChild(thumbSlot); // Thêm slot ảnh (DIV)
+        imgWrap.appendChild(pasteTip); // Thêm chỉ dẫn
+        imgWrap.appendChild(buttonGroup); // Thêm nhóm nút
+
+        // Hàm xử lý ảnh chính (Base64)
+        const handleImageFile = (file) => {
+            if (!file || !file.type.startsWith('image/')) return;
+            
+            thumbSlot.innerHTML = ''; // Xóa text/img cũ
+            thumbSlot.textContent = 'Đang nén...';
+
+            const reader = new FileReader();
+            reader.onload = (ev)=>{
+                // *** ĐÃ SỬA: Thay đổi nén ảnh theo yêu cầu 70% và 200x200 pixel ***
+                const MAX_SIZE = 200; 
+                const QUALITY = 0.7; 
+                // *** KẾT THÚC SỬA ***
+                
+                compressImage(ev.target.result, MAX_SIZE, MAX_SIZE, QUALITY)
+                    .then(compressedBase64 => {
+                        thumbImg.src = compressedBase64;
+                        thumbImg.alt = 'Ảnh minh họa';
+                        thumbSlot.innerHTML = ''; // Clear text
+                        thumbSlot.appendChild(thumbImg); // Thêm lại ảnh
+                    })
+                    .catch(err => {
+                        console.error('Lỗi khi nén ảnh:', err);
+                        alert('Lỗi khi xử lý ảnh. Vui lòng thử lại.');
+                        thumbSlot.textContent = 'Lỗi ảnh';
+                    });
+            };
+            reader.readAsDataURL(file);
+        };
+
+
+        // Image Preview Logic (Từ input file)
+        fileInput.onchange = (e) => handleImageFile(e.target.files[0]);
+        
+        
+        div.appendChild(left); 
+        div.appendChild(imgWrap);
+        wordsArea.appendChild(div);
+
+        // --- CẬP NHẬT: Ưu tiên Dán Ảnh và chặn Dán Text nếu có ảnh ---
+        div.addEventListener('paste', (e) => {
+            const clipboardData = e.clipboardData || e.originalEvent.clipboardData;
+            const items = clipboardData.items;
+            let imageFound = false;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    // Nếu tìm thấy ảnh, gọi preventDefault() để CHẶN DÁN VĂN BẢN
+                    e.preventDefault(); 
+                    const file = items[i].getAsFile();
+                    handleImageFile(file);
+                    imageFound = true;
+                    break;
+                }
+            }
+            // Nếu không tìm thấy ảnh, không gọi preventDefault() -> cho phép dán text bình thường vào ô input đang focus (nếu có)
+        });
+
+
+        // --- Logic Tự động thêm dòng (Auto-Add) (GIỮ NGUYÊN) ---
+        const attachAutoAdd = (inputElement)=>{
+             inputElement.addEventListener('input', ()=>{
+                const allEnInputs = Array.from(wordsArea.querySelectorAll('.en'));
+                if(inputElement === allEnInputs[allEnInputs.length - 1] && inputElement.value.trim() !== ''){
+                    addSingleWordInput();
+                }
+            });
+        };
+        
+        const allEnInputs = Array.from(wordsArea.querySelectorAll('.en'));
+        attachAutoAdd(allEnInputs[allEnInputs.length - 1]);
+
+        return div;
+    }
+
+    // --- HÀM LƯU DỮ LIỆU ---
+
+    function collectAndFilterWords(){
+        const wordDivs = Array.from(wordsArea.querySelectorAll('.word-item'));
+        const words = wordDivs.map(d=>{
+            const thumbSlot = d.querySelector('.thumb');
+            const thumbImg = thumbSlot.querySelector('img');
+            
+            return {
+                en: (d.querySelector('.en').value||'').trim(),
+                vi: (d.querySelector('.vi').value||'').trim(),
+                // Lấy src từ img bên trong thumbSlot
+                // Vẫn dùng thumbImg.src vì nó đã được cập nhật Base64 từ compressImage
+                img: thumbImg ? thumbImg.src || '' : '', 
+            }
+        })
+        // LỌC: Giữ lại những dòng CÓ TỪ TIẾNG ANH HOẶC CÓ ẢNH
+        .filter(w => w.en || w.img); 
+        return words;
+    }
+
+    function createNewTopicSaveHandler(){
+        const title = topicTitle.value.trim();
+        if(!title){ alert('Cần nhập tiêu đề chủ đề'); return; }
+
+        const words = collectAndFilterWords();
+
+        if(!words.length){ 
+            if(!confirm('Chủ đề rỗng (không có từ nào hợp lệ) — vẫn lưu?')){return;} 
+        }
+        
+        topics.push({title, words});
+        saveTopics(); renderTopics(); closeModal();
+    }
+    
+    function saveEditTopicHandler(){
+        const title = topicTitle.value.trim();
+        if(!title){ alert('Cần nhập tiêu đề chủ đề'); return; }
+        
+        const updatedWords = collectAndFilterWords();
+
+        if(!updatedWords.length){ 
+            if(!confirm('Chủ đề rỗng (không có từ nào hợp lệ) — vẫn lưu?')){return;} 
+        }
+        
+        // Cập nhật chủ đề
+        topics[currentTopicIndex].title = title;
+        topics[currentTopicIndex].words = updatedWords; 
+        
+        saveTopics(); 
+        renderTopics(); 
+        closeModal();
+    }
+
+    // --- HÀM PHỤC VỤ (SHUFFLE/RANDOM) ---
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    // --- KẾT THÚC HÀM PHỤC VỤ ---
+
+    // --- HÀM PHÁT ÂM (GIỮ NGUYÊN) ---
+    function speakWord(word) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(word);
+            // Thử thiết lập ngôn ngữ tiếng Anh Mỹ
+            utterance.lang = 'en-US'; 
+            utterance.rate = 0.9; 
+
+            // Hủy lời nói đang chờ và bắt đầu lời nói mới
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Trình duyệt không hỗ trợ tính năng phát âm (Web Speech API).");
+        }
+    }
+
+
+    // --- CHẾ ĐỘ HỌC VÀ LUYỆN TẬP (CÓ RANDOM) ---
+
+    function openTopic(idx){
+        const t = topics[idx];
+        lessonArea.innerHTML = '';
+
+        const container = document.createElement('div'); container.className='lesson';
+        const contentDiv = document.createElement('div'); contentDiv.className='lesson-content'; 
+        const title = document.createElement('h2'); title.textContent = t.title;
+        const chooseRow = document.createElement('div'); chooseRow.className='controls-row'; chooseRow.style.marginTop='8px';
+        
+        // Cập nhật để thêm lựa chọn Random/Thứ tự
+        const btnStudyNormal = document.createElement('button'); btnStudyNormal.textContent='Học từ (Thứ tự)';
+        const btnStudyRandom = document.createElement('button'); btnStudyRandom.textContent='Học từ (Ngẫu nhiên)'; btnStudyRandom.className='secondary';
+        
+        const btnPracticeNormal = document.createElement('button'); btnPracticeNormal.textContent='Luyện viết (Thứ tự)';
+        const btnPracticeRandom = document.createElement('button'); btnPracticeRandom.textContent='Luyện viết (Ngẫu nhiên)'; btnPracticeRandom.className='secondary';
+
+        const addBtn = document.createElement('button'); addBtn.className='secondary'; addBtn.textContent='Thêm/Sửa từ'; 
+        
+        // Truyền cờ isRandom vào hàm chế độ học
+        btnStudyNormal.onclick = ()=> startStudyMode(idx, false);
+        btnStudyRandom.onclick = ()=> startStudyMode(idx, true); // MỚI
+        btnPracticeNormal.onclick = ()=> startPracticeMode(idx, false);
+        btnPracticeRandom.onclick = ()=> startPracticeMode(idx, true); // MỚI
+
+        addBtn.onclick = ()=> openEditModal(idx); 
+        
+        // Thứ tự hiển thị nút
+        chooseRow.appendChild(btnStudyNormal); 
+        chooseRow.appendChild(btnStudyRandom);
+        chooseRow.appendChild(btnPracticeNormal); 
+        chooseRow.appendChild(btnPracticeRandom);
+        chooseRow.appendChild(addBtn);
+        
+        contentDiv.appendChild(title); 
+        contentDiv.appendChild(chooseRow);
+        
+        container.appendChild(contentDiv);
+        lessonArea.appendChild(container);
+        window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+    }
+
+
+    // STUDY MODE (Ô 1 - CÓ RANDOM) 
+    
+
+function startStudyMode(topicIndex, isRandom = false){
+    const topic = topics[topicIndex];
+    let wordsToStudy = topic.words.filter(w => w.en || w.vi || w.img);
+
+    if (isRandom) wordsToStudy = shuffleArray(wordsToStudy);
+
+    if(!wordsToStudy.length){
+        alert('Chủ đề không có từ hợp lệ.');
+        openTopic(topicIndex);
+        return;
+    }
+
+    let i = 0;
+
+    const container = document.createElement('div');
+    container.className='lesson';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className='lesson-content';
+
+    const title = document.createElement('h3');
+    title.textContent = topic.title + (isRandom ? ' — Học từ (Ngẫu nhiên)' : ' — Học từ (Thứ tự)');
+
+    /* ====== WORD + SPEAKER ====== */
+    const wordDisplayContainer = document.createElement('div');
+    wordDisplayContainer.style.display='flex';
+    wordDisplayContainer.style.alignItems='center';
+    wordDisplayContainer.style.justifyContent='center';
+    wordDisplayContainer.style.gap='10px';
+
+    const big = document.createElement('p');
+    big.className='big-word';
+    big.textContent='••••••';          // 🔒 MẶC ĐỊNH ẨN
+    big.dataset.word='';
+
+    const speakBtn = document.createElement('button');
+    speakBtn.textContent='🎧 Tự hiện nghĩa sau khi bấm loa';
+    speakBtn.className='secondary';
+
+    speakBtn.onclick = () => {
+        const word = wordsToStudy[i].en || '';
+        if (!word) return;
+
+        // 🔓 Hiện từ tiếng Anh
+        big.textContent = word;
+
+        // 🔊 Phát âm
+        speakWord(word);
+    };
+
+    wordDisplayContainer.appendChild(big);
+    wordDisplayContainer.appendChild(speakBtn);
+
+    /* ====== VISUAL SLOT ====== */
+    const visualSlot = document.createElement('div');
+    visualSlot.className='thumb';
+
+    const meaningBox = document.createElement('div');
+    meaningBox.className='hidden-meaning';
+    meaningBox.textContent='Nghĩa: (ẩn)';
+
+    const btnShow = document.createElement('button');
+    btnShow.textContent='Hiện nghĩa';
+
+    const btnPrev = document.createElement('button');
+    btnPrev.textContent='Quay lại';
+    btnPrev.className='secondary';
+
+    const btnNext = document.createElement('button');
+    btnNext.textContent='Từ tiếp theo';
+
+    const progress = document.createElement('div');
+    progress.className='mini';
+
+    function render(){
+        const w = wordsToStudy[i];
+
+        /* 🔒 ẨN LẠI TỪ MỖI KHI SANG TỪ MỚI */
+        big.textContent = '••••••';
+        big.dataset.word = w.en || '';
+
+        /* Visual */
+        visualSlot.innerHTML='';
+        if (w.img){
+            const img = document.createElement('img');
+            img.src = w.img;
+            visualSlot.appendChild(img);
+        } else {
+            visualSlot.textContent = w.vi || '(Không có nghĩa)';
+        }
+
+        /* Meaning */
+        meaningBox.textContent='Nghĩa: (ẩn)';
+        btnShow.disabled=false;
+
+        speakBtn.disabled = !w.en;
+        btnPrev.disabled = i===0;
+        btnNext.textContent = (i < wordsToStudy.length-1)
+            ? 'Từ tiếp theo ➡️'
+            : 'Hoàn thành ✅';
+
+        progress.textContent = `Từ ${i+1} / ${wordsToStudy.length}`;
+    }
+
+    btnShow.onclick = ()=>{
+        meaningBox.textContent = 'Nghĩa: ' + (wordsToStudy[i].vi || '(Không có nghĩa)');
+        btnShow.disabled=true;
+    };
+
+    btnPrev.onclick = ()=>{
+        if(i>0){ i--; render(); }
+    };
+
+    btnNext.onclick = ()=>{
+        if(i < wordsToStudy.length-1){
+            i++; render();
+        } else {
+            const again = confirm('Đã học xong. Ôn lại?');
+            if (again) startStudyMode(topicIndex, isRandom);
+            else openTopic(topicIndex);
+        }
+    };
+
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(wordDisplayContainer);
+    contentDiv.appendChild(visualSlot);
+    contentDiv.appendChild(meaningBox);
+
+    const row = document.createElement('div');
+    row.className='controls-row';
+    row.appendChild(btnPrev);
+    row.appendChild(btnShow);
+    row.appendChild(btnNext);
+
+    contentDiv.appendChild(row);
+    contentDiv.appendChild(progress);
+
+    container.appendChild(contentDiv);
+    lessonArea.innerHTML='';
+    lessonArea.appendChild(container);
+
+    render();
+}
+
+    // PRACTICE MODE (Ô 2 - CÓ RANDOM) 
+    function startPracticeMode(topicIndex, isRandom = false){ // THÊM isRandom
+        const topic = topics[topicIndex];
+        // Chỉ luyện viết những từ CÓ TỪ TIẾNG ANH (dùng làm đáp án)
+        let wordsToPractice = topic.words.filter(w => w.en.trim() !== ''); // Dùng let
+        
+        // LOGIC RANDOM HÓA
+        if (isRandom) {
+            wordsToPractice = shuffleArray(wordsToPractice);
+        }
+        
+        if(!wordsToPractice.length){ alert('Chủ đề không có từ tiếng Anh nào để luyện viết.'); openTopic(topicIndex); return; }
+
+        let i = 0;
+        let correctCount = 0;
+        // *** THÊM MỚI: Mảng lưu trữ các từ bị sai ***
+        let mistakes = []; 
+        // **********************************************
+        
+        const container = document.createElement('div'); container.className='lesson';
+        const contentDiv = document.createElement('div'); contentDiv.className='lesson-content'; 
+
+        // CẬP NHẬT TIÊU ĐỀ
+        const title = document.createElement('h3'); 
+        title.textContent = topic.title + (isRandom ? ' — Luyện viết (Ngẫu nhiên)' : ' — Luyện viết chính tả');
+        
+        // Sử dụng DIV cho visual slot để có thể chứa cả IMG hoặc TEXT
+        const visualSlot = document.createElement('div'); 
+        visualSlot.className='thumb'; 
+        
+        // Đã thay đổi: Tạo div hiển thị nghĩa luôn, dùng class mới cho style đậm
+        const viMeaning = document.createElement('div'); 
+        viMeaning.className='visible-meaning'; 
+        viMeaning.textContent='Nghĩa: (Đang tải...)'; // Placeholder
+        
+        const input = document.createElement('input'); input.type='text'; input.placeholder='Gõ chính tả từ tiếng Anh ở đây';
+        
+        const checkBtn = document.createElement('button'); checkBtn.textContent='Kiểm tra';
+        const nextBtn = document.createElement('button'); nextBtn.textContent='Từ tiếp theo'; nextBtn.disabled = true;
+        const status = document.createElement('div'); status.className='status';
+        const score = document.createElement('div'); score.className='mini'; 
+
+        function render(){
+            const w = wordsToPractice[i];
+            
+            // 1. Logic Hiện ảnh/nghĩa ở slot
+            visualSlot.innerHTML = ''; // Clear content
+            const hasImage = !!w.img;
+
+            if (hasImage) {
+                // Có ảnh: Chèn <img> vào slot
+                const img = document.createElement('img');
+                img.src = w.img;
+                visualSlot.appendChild(img);
+            } else {
+                // Không có ảnh: Hiện nghĩa tiếng Việt thay cho ảnh
+                visualSlot.textContent = w.vi || '(Không có nghĩa tiếng Việt)';
+            }
+
+            // 2. Hiện nghĩa tiếng Việt DƯỚI slot (luôn hiện và in đậm)
+            const meaningText = w.vi || '(Không có nghĩa tiếng Việt)';
+            viMeaning.textContent = `Nghĩa: ${meaningText}`;
+
+            input.value = '';
+            status.textContent = '';
+            input.disabled = false;
+            checkBtn.disabled = false;
+            nextBtn.disabled = true;
+
+            score.textContent = `Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i+1}/${wordsToPractice.length}`;
+            input.focus();
+        }
+        
+        // Đã loại bỏ nút revealViBtn
+        
+        checkBtn.onclick = ()=>{
+            const w = wordsToPractice[i];
+            const answer = input.value.trim().toLowerCase();
+            const target = (w.en||'').trim().toLowerCase();
+
+            // *** THÊM LOGIC KIỂM TRA INPUT RỖNG ĐỂ HỖ TRỢ ENTER ***
+            if(!answer){ 
+                alert('Nhập đáp án trước khi kiểm tra'); 
+                return; 
+            }
+            // *******************************************************
+            
+            if(answer === target){ 
+                status.textContent = 'great'; 
+                correctCount++; 
+                // Phát âm khi đúng
+                if (w.en) speakWord(w.en); 
+            }
+            else { 
+                status.textContent = `Sai — Đáp án đúng: **${w.en}**`; 
+                // *** THÊM MỚI: Ghi lại từ bị sai nếu chưa có trong danh sách mistakes ***
+                // Dùng .en làm key để tránh thêm trùng lặp (ví dụ: người dùng cố ý nhập sai 2 lần)
+                if(!mistakes.find(m => m.en === w.en)) {
+                    mistakes.push(w);
+                }
+                // *************************************************************************
+            }
+            
+            input.disabled = true; 
+            checkBtn.disabled = true;
+            nextBtn.disabled = false;
+
+            // Cập nhật điểm ngay lập tức
+            score.textContent = `Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i+1}/${wordsToPractice.length}`;
+        }
+        
+        // CẬP NHẬT LOGIC KẾT THÚC BÀI LUYỆN TẬP
+        nextBtn.onclick = ()=>{
+            if(i < wordsToPractice.length-1){ 
+                i++; render(); 
+            } else {
+                // *** Logic kết thúc bài luyện tập (Thêm tùy chọn ôn lại câu sai) ***
+                const totalWords = wordsToPractice.length;
+                const finalScore = correctCount;
+                const totalMistakes = mistakes.length;
+                
+                let message = `Bạn đã hoàn thành luyện viết. Điểm cuối cùng: ${finalScore}/${totalWords}.`;
+                if (totalMistakes > 0) {
+                    message += `\nBạn đã sai ${totalMistakes} từ.`;
+                }
+                
+                // Cập nhật text option 1 để phản ánh chế độ
+                let options = `1. Ôn lại từ đầu (tất cả từ) [${isRandom ? 'Ngẫu nhiên' : 'Thứ tự'}]\n`; 
+                if (totalMistakes > 0) {
+                    options += `2. Ôn lại ${totalMistakes} từ bị sai\n`;
+                }
+                options += '3. Về trang chủ chủ đề';
+                
+                const choice = prompt(`${message}\nVui lòng chọn hành động (nhập số 1, 2, hoặc 3):\n\n${options}`);
+
+                switch (choice) {
+                    case '1':
+                        // 1. Ôn lại từ đầu - Truyền lại cờ random
+                        startPracticeMode(topicIndex, isRandom); 
+                        break;
+                    case '2':
+                        if (totalMistakes > 0) {
+                            // 2. Ôn lại câu sai - KHÔNG RANDOM, luôn theo thứ tự mistakes để dễ ôn
+                            startPracticeModeMistakes(topicIndex, mistakes, false); 
+                            break;
+                        }
+                        // Nếu người dùng chọn 2 nhưng không có lỗi, chuyển về trang chủ (fallback)
+                    case '3':
+                    default:
+                        // 3. Về trang chủ
+                        openTopic(topicIndex);
+                        break;
+                }
+                // *************************************************************************
+            }
+        }
+        
+        // *** ĐÃ SỬA: Logic Enter để Check VÀ Phím cách để Next ***
+        input.addEventListener('keydown', (e) => {
+            // Ngăn hành vi Enter mặc định (gửi form)
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                if (!checkBtn.disabled) {
+                    // Enter lần 1: Check đáp án (chỉ khi input không rỗng)
+                    if (input.value.trim() !== '') {
+                        checkBtn.click();
+                    }
+                }
+            } else if (e.key === ' ') { 
+                 // Phím cách: Dùng để Next (chỉ khi đã check và nextBtn khả dụng)
+                 if (!nextBtn.disabled) {
+                    e.preventDefault(); // Ngăn nhập ký tự khoảng trắng vào input
+                    nextBtn.click();
+                }
+            }
+        });
+        // ********************************************
+
+        contentDiv.appendChild(title); 
+        contentDiv.appendChild(visualSlot); 
+        contentDiv.appendChild(viMeaning); // ĐÃ THAY ĐỔI: Thêm nghĩa hiện luôn
+        
+        // Đã loại bỏ hàng controls cũ
+        
+        const practiceDiv = document.createElement('div'); practiceDiv.className='practice'; practiceDiv.style.marginTop='12px'; 
+        practiceDiv.appendChild(input);
+        
+        const prRow = document.createElement('div'); prRow.className='controls-row'; prRow.style.marginTop='8px'; 
+        prRow.appendChild(checkBtn); prRow.appendChild(nextBtn);
+        
+        practiceDiv.appendChild(prRow); 
+        practiceDiv.appendChild(status); 
+        practiceDiv.appendChild(score);
+        
+        contentDiv.appendChild(practiceDiv);
+        container.appendChild(contentDiv); 
+        lessonArea.innerHTML=''; 
+        lessonArea.appendChild(container);
+        render();
+    }
+
+    // *** PRACTICE MODE DÀNH CHO ÔN LẠI CÂU SAI (CÓ RANDOM) ***
+    function startPracticeModeMistakes(topicIndex, mistakeWords, isRandom = false){ // THÊM isRandom
+        // Danh sách từ để luyện tập lúc này là danh sách bị sai
+        let wordsToPractice = mistakeWords.filter(w => w.en.trim() !== ''); // Dùng let
+        
+        // LOGIC RANDOM HÓA (Áp dụng nếu được yêu cầu)
+        if (isRandom) {
+            wordsToPractice = shuffleArray(wordsToPractice);
+        }
+        
+        if(!wordsToPractice.length){ 
+            alert('Không có từ bị sai để ôn lại!'); 
+            openTopic(topicIndex); 
+            return; 
+        }
+
+        let i = 0;
+        let correctCount = 0;
+        // Vẫn cần mảng mistakes mới cho phiên ôn lại này
+        let mistakesInReview = []; 
+        
+        const container = document.createElement('div'); container.className='lesson';
+        const contentDiv = document.createElement('div'); contentDiv.className='lesson-content'; 
+
+        // CẬP NHẬT TIÊU ĐỀ
+        const title = document.createElement('h3'); 
+        title.textContent = topics[topicIndex].title + ' — ÔN LẠI CÂU SAI' + (isRandom ? ' (Ngẫu nhiên)' : '');
+        
+        const visualSlot = document.createElement('div'); 
+        visualSlot.className='thumb'; 
+        
+        const viMeaning = document.createElement('div'); 
+        viMeaning.className='visible-meaning'; 
+        viMeaning.textContent='Nghĩa: (Đang tải...)'; 
+        
+        const input = document.createElement('input'); input.type='text'; input.placeholder='Gõ chính tả từ tiếng Anh ở đây';
+        
+        const checkBtn = document.createElement('button'); checkBtn.textContent='Kiểm tra';
+        const nextBtn = document.createElement('button'); nextBtn.textContent='Từ tiếp theo'; nextBtn.disabled = true;
+        const status = document.createElement('div'); status.className='status';
+        const score = document.createElement('div'); score.className='mini'; 
+
+
+        function render(){
+            const w = wordsToPractice[i];
+            
+            // 1. Logic Hiện ảnh/nghĩa ở slot
+            visualSlot.innerHTML = ''; 
+            const hasImage = !!w.img;
+
+            if (hasImage) {
+                const img = document.createElement('img');
+                img.src = w.img;
+                visualSlot.appendChild(img);
+            } else {
+                visualSlot.textContent = w.vi || '(Không có nghĩa tiếng Việt)';
+            }
+
+            // 2. Hiện nghĩa tiếng Việt DƯỚI slot 
+            const meaningText = w.vi || '(Không có nghĩa tiếng Việt)';
+            viMeaning.textContent = `Nghĩa: ${meaningText}`;
+
+            input.value = '';
+            status.textContent = '';
+            input.disabled = false;
+            checkBtn.disabled = false;
+            nextBtn.disabled = true;
+
+            score.textContent = `[Ôn lại] Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i+1}/${wordsToPractice.length}`;
+            input.focus();
+        }
+        
+        checkBtn.onclick = ()=>{
+            const w = wordsToPractice[i];
+            const answer = input.value.trim().toLowerCase();
+            const target = (w.en||'').trim().toLowerCase();
+            
+            // *** THÊM LOGIC KIỂM TRA INPUT RỖNG ĐỂ HỖ TRỢ ENTER ***
+            if(!answer){ 
+                alert('Nhập đáp án trước khi kiểm tra'); 
+                return; 
+            }
+            // *******************************************************
+            
+            if(answer === target){ 
+                status.textContent = 'great'; 
+                correctCount++; 
+                if (w.en) speakWord(w.en); 
+            }
+            else { 
+                status.textContent = `Sai — Đáp án đúng: **${w.en}**`; 
+                // Ghi lại lỗi trong phiên ôn tập này (nếu cần ôn lại lỗi lần 2)
+                if(!mistakesInReview.find(m => m.en === w.en)) {
+                    mistakesInReview.push(w);
+                }
+            }
+            
+            input.disabled = true; 
+            checkBtn.disabled = true;
+            nextBtn.disabled = false;
+
+            score.textContent = `[Ôn lại] Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i+1}/${wordsToPractice.length}`;
+        }
+        
+        // CẬP NHẬT LOGIC KẾT THÚC
+        nextBtn.onclick = ()=>{
+            if(i < wordsToPractice.length-1){ 
+                i++; render(); 
+            } else {
+                // Kết thúc phiên ôn lại câu sai
+                const totalWords = wordsToPractice.length;
+                const finalScore = correctCount;
+                const totalMistakes = mistakesInReview.length;
+                
+                let message = `Đã hoàn thành ôn lại. Điểm lần ôn này: ${finalScore}/${totalWords}.`;
+                if (totalMistakes > 0) {
+                    message += `\nBạn vẫn còn sai ${totalMistakes} từ.`;
+                }
+                
+                let options = '1. Ôn lại từ đầu (danh sách câu sai ban đầu)\n';
+                if (totalMistakes > 0) {
+                    options += `2. Ôn lại ${totalMistakes} từ VẪN CÒN SAI\n`;
+                }
+                options += '3. Về trang chủ chủ đề';
+                
+                const choice = prompt(`${message}\nVui lòng chọn hành động (nhập số 1, 2, hoặc 3):\n\n${options}`);
+
+                switch (choice) {
+                    case '1':
+                        // 1. Ôn lại danh sách câu sai BAN ĐẦU - Truyền lại cờ random
+                        startPracticeModeMistakes(topicIndex, mistakeWords, isRandom); 
+                        break;
+                    case '2':
+                        if (totalMistakes > 0) {
+                            // 2. Ôn lại danh sách câu sai LẦN 2 - Truyền lại cờ random
+                            startPracticeModeMistakes(topicIndex, mistakesInReview, isRandom); 
+                            break;
+                        }
+                    case '3':
+                    default:
+                        // 3. Về trang chủ
+                        openTopic(topicIndex);
+                        break;
+                }
+            }
+        }
+        
+        // *** ĐÃ SỬA: Logic Enter để Check VÀ Phím cách để Next ***
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                if (!checkBtn.disabled) {
+                    // Enter lần 1: Check đáp án (chỉ khi input không rỗng)
+                    if (input.value.trim() !== '') {
+                        checkBtn.click();
+                    }
+                }
+            } else if (e.key === ' ') { 
+                 // Phím cách: Dùng để Next (chỉ khi đã check và nextBtn khả dụng)
+                 if (!nextBtn.disabled) {
+                    e.preventDefault(); // Ngăn nhập ký tự khoảng trắng vào input
+                    nextBtn.click();
+                }
+            }
+        });
+        // ********************************************
+
+        contentDiv.appendChild(title); 
+        contentDiv.appendChild(visualSlot); 
+        contentDiv.appendChild(viMeaning);
+        
+        const practiceDiv = document.createElement('div'); practiceDiv.className='practice'; practiceDiv.style.marginTop='12px'; 
+        practiceDiv.appendChild(input);
+        
+        const prRow = document.createElement('div'); prRow.className='controls-row'; prRow.style.marginTop='8px'; 
+        prRow.appendChild(checkBtn); prRow.appendChild(nextBtn);
+        
+        practiceDiv.appendChild(prRow); 
+        practiceDiv.appendChild(status); 
+        practiceDiv.appendChild(score);
+        
+        contentDiv.appendChild(practiceDiv);
+        container.appendChild(contentDiv); 
+        lessonArea.innerHTML=''; 
+        lessonArea.appendChild(container);
+        render();
+    }
+    // *** KẾT THÚC THÊM MỚI ***
+
+    // --- INIT ---
+    btnNew.onclick = ()=> openCreateModal();
+    btnManageData.onclick = ()=> openDataModal(); 
+    btnExportAllData.onclick = ()=> exportAllData(); 
+    btnImportData.onclick = ()=> fileImport.click(); 
+    fileImport.onchange = (e) => importData(e); 
+    btnCancel.onclick = ()=> closeModal();
+    wordCount.onchange = ()=> buildWordInputs(parseInt(wordCount.value,10));
+    btnAddMoreWord.onclick = ()=> addSingleWordInput();
+    
+    renderTopics();
+
+</script>
+</body>
+</html>

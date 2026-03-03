@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Hướng Dẫn - Akirakha</title>
+
+<style>
+.container {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép các thành phần tự nhảy xuống dòng khi hết chỗ */
+  gap: 20px;
+}
+
+.item {
+  flex: 1 1 300px; /* Ưu tiên rộng 300px, nhưng có thể co giãn */
+}
+:root{
+--bg1:#1e3a8a;
+--bg2:#6d28d9;
+--bg3:#9333ea;
+
+--glass:rgba(255,255,255,0.08);
+--glass-strong:rgba(255,255,255,0.12);
+--border:rgba(255,255,255,0.18);
+
+--accent:#60a5fa;
+--accent2:#a855f7;
+
+--text:#ffffff;
+--muted:#cbd5e1;
+
+--ease:cubic-bezier(.4,0,.2,1);
+}
+
+*{
+box-sizing:border-box;
+font-family:Inter,system-ui;
+-webkit-font-smoothing:antialiased;
+}
+
+body{
+margin:0;
+background:
+radial-gradient(circle at 20% 20%, #2563eb55, transparent 40%),
+radial-gradient(circle at 80% 30%, #a855f755, transparent 40%),
+linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3));
+background-attachment:fixed;
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* ===== TOOLBAR ===== */
+
+.toolbar{
+background:var(--glass);
+backdrop-filter:blur(30px);
+border-bottom:1px solid var(--border);
+padding:14px 22px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 8px 40px rgba(0,0,0,0.35);
+position:relative;
+z-index:20;
+transition:all .4s var(--ease);
+}
+
+.toolbar:hover{
+background:var(--glass-strong);
+}
+
+.menu-btn{
+font-size:22px;
+cursor:pointer;
+margin-right:15px;
+transition:transform .4s var(--ease);
+}
+
+.menu-btn:hover{
+transform:rotate(90deg) scale(1.1);
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+width:240px;
+background:rgba(20,20,35,0.95);
+backdrop-filter:blur(40px);
+height:100vh;
+position:fixed;
+top:0;
+left:-240px;
+transition:all .5s var(--ease);
+padding-top:80px;
+z-index:30;
+border-right:1px solid var(--border);
+box-shadow:20px 0 60px rgba(0,0,0,0.5);
+}
+
+.sidebar a{
+padding:18px;
+display:block;
+text-decoration:none;
+color:white;
+border-bottom:1px solid rgba(255,255,255,0.05);
+transition:all .4s var(--ease);
+}
+
+.sidebar a:hover{
+background:rgba(255,255,255,0.1);
+padding-left:25px;
+}
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(8px);
+opacity:0;
+visibility:hidden;
+transition:all .4s var(--ease);
+z-index:25;
+}
+
+.overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+/* ===== CONTAINER ===== */
+
+.container{
+padding:60px 20px;
+max-width:1300px;
+margin:0 auto;
+text-align:center;
+}
+
+/* ===== TITLE ===== */
+
+h2{
+font-size:28px;
+font-weight:700;
+letter-spacing:.5px;
+margin-bottom:10px;
+background:linear-gradient(90deg,#fff,#cbd5e1);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* ===== VIDEO GRID ===== */
+
+.video-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+gap:35px;
+margin-top:40px;
+}
+
+/* ===== VIDEO CARD (APPLE CINEMATIC) ===== */
+
+.video-card{
+background:var(--glass);
+backdrop-filter:blur(45px);
+border:1px solid var(--border);
+border-radius:28px;
+padding:20px;
+box-shadow:
+0 10px 30px rgba(0,0,0,0.3),
+0 40px 120px rgba(0,0,0,0.5);
+transition:
+transform .7s var(--ease),
+box-shadow .7s var(--ease),
+border .4s var(--ease),
+background .4s var(--ease);
+
+transform:translateY(40px) scale(.98);
+opacity:0;
+animation:fadeUp .9s var(--ease) forwards;
+}
+
+.video-card:nth-child(1){animation-delay:.1s;}
+.video-card:nth-child(2){animation-delay:.2s;}
+.video-card:nth-child(3){animation-delay:.3s;}
+.video-card:nth-child(4){animation-delay:.4s;}
+
+.video-card:hover{
+transform:translateY(-14px) scale(1.03);
+box-shadow:
+0 25px 70px rgba(0,0,0,0.5),
+0 60px 160px rgba(0,0,0,0.6);
+border:1px solid rgba(255,255,255,0.35);
+background:var(--glass-strong);
+}
+
+/* ===== VIDEO ===== */
+
+.video-card video{
+width:100%;
+border-radius:20px;
+transition:
+transform .8s var(--ease),
+filter .8s var(--ease);
+}
+
+.video-card:hover video{
+transform:scale(1.05);
+filter:brightness(1.1) contrast(1.05);
+}
+
+/* ===== TEXT ===== */
+
+.video-title{
+margin-top:14px;
+font-weight:600;
+font-size:16px;
+letter-spacing:.3px;
+}
+
+.video-meta{
+font-size:13px;
+color:var(--muted);
+margin-top:6px;
+}
+
+/* ===== FADE UP ===== */
+
+@keyframes fadeUp{
+to{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+}
+
+/* ===== SCROLL SMOOTH ===== */
+
+html{
+scroll-behavior:smooth;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+<a href="index.html">Home</a>
+<a href="guide.html">Video Hướng Dẫn</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+<div style="display:flex;align-items:center;">
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+akirakha
+</div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+<h2>🎬 Video Hướng Dẫn</h2>
+
+<div class="video-grid">
+
+<div class="video-card">
+<video controls>
+<source src="video/huongdan.mp4" type="video/mp4">
+</video>
+<div class="video-title">Cách thêm từ và chủ đề</div>
+<div class="video-meta"></div>
+</div>
+
+<div class="video-card">
+<video controls>
+<source src="video/huongdan2.mp4" type="video/mp4">
+</video>
+<div class="video-title">Cách lưu chủ đề về máy và upload chủ đề từ máy lên web</div>
+<div class="video-meta"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleMenu(){
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("overlay");
+if(sidebar.style.left==="0px"){
+sidebar.style.left="-220px";
+overlay.style.display="none";
+}else{
+sidebar.style.left="0px";
+overlay.style.display="block";
+}
+}
+</script>
+
+</body>
+</html>
