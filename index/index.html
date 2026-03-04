@@ -383,7 +383,7 @@ transform:translateY(0);
             <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
                 <button id="btnExportAllData" type="button">⬇️ Download All (.json)</button>
                 <button id="btnImportData" type="button" class="secondary">⬆️ Upload (.json)</button>
-                <input type="file" id="fileImport" accept=".json" style="display: none;" />
+                <input type="file" id="fileImport" accept=".json" style="display: none;" multiple />>
             </div>
             <div style="text-align: right; margin-top: 15px;">
                 <button class="secondary" onclick="closeDataModal()">Đóng</button>
@@ -591,38 +591,53 @@ transform:translateY(0);
     }
 
 
-    function importData(event){
-        const file = event.target.files[0];
-        if (!file) return;
+    async function importData(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const importedTopics = JSON.parse(e.target.result);
-                if (!Array.isArray(importedTopics) || importedTopics.some(t => !t.title || !Array.isArray(t.words))) {
-                    throw new Error("Invalid structure");
+    let totalImported = 0;
+    const countBefore = topics.length;
+
+    // Sử dụng Promise.all để đọc tất cả các file cùng lúc
+    const promises = Array.from(files).map(file => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedContent = JSON.parse(e.target.result);
+                    
+                    // Kiểm tra nếu file là mảng các chủ đề hoặc chỉ là 1 chủ đề đơn lẻ
+                    if (Array.isArray(importedContent)) {
+                        topics.push(...importedContent);
+                        totalImported += importedContent.length;
+                    } else if (importedContent.title && Array.isArray(importedContent.words)) {
+                        topics.push(importedContent);
+                        totalImported += 1;
+                    }
+                    resolve();
+                } catch (error) {
+                    console.error(`Lỗi file ${file.name}:`, error);
+                    resolve(); // Vẫn resolve để tiếp tục các file khác
                 }
-                
-                // *** ĐÃ SỬA: GỠ BỎ HỘP THOẠI CONFIRM VÀ LUÔN THÊM VÀO ĐỂ TRÁNH MẤT DỮ LIỆU CŨ ***
-                const countBefore = topics.length;
-                topics.push(...importedTopics); // Luôn thêm (Append) dữ liệu mới vào dữ liệu hiện có
-                
-                alert(`Đã nhập thành công ${importedTopics.length} chủ đề mới vào dữ liệu hiện có. Tổng cộng: ${countBefore + importedTopics.length} chủ đề.`);
-                // *** KẾT THÚC SỬA ***
-                
-                saveTopics();
-                renderTopics();
-                closeDataModal();
+            };
+            reader.readAsText(file);
+        });
+    });
 
-            } catch (error) {
-                alert('⚠️ Lỗi: File không đúng định dạng JSON hoặc cấu trúc không hợp lệ.');
-            } finally {
-                // Reset input file để có thể chọn lại cùng một file sau khi lỗi
-                fileImport.value = '';
-            }
-        };
-        reader.readAsText(file);
+    await Promise.all(promises);
+
+    if (totalImported > 0) {
+        alert(`Đã nhập thành công ${totalImported} chủ đề từ ${files.length} file. Tổng cộng hiện có: ${topics.length} chủ đề.`);
+        saveTopics();
+        renderTopics();
+        closeDataModal();
+    } else {
+        alert('Không có dữ liệu hợp lệ được tìm thấy trong các file đã chọn.');
     }
+
+    // Reset input file
+    fileImport.value = '';
+}
 
     // --- HÀM TẠO FILE WORD ---
     function downloadWord(topicIndex){
