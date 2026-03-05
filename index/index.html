@@ -333,6 +333,17 @@ opacity:1;
 transform:translateY(0);
 }
 }
+/* Hiệu ứng khi đang kéo card */
+.card.dragging {
+    opacity: 0.5;
+    border: 2px dashed var(--accent);
+    transform: scale(0.95);
+}
+
+/* Hiệu ứng mờ cho các card khác khi có card đang đi ngang qua */
+.card.drag-over {
+    border: 2px solid var(--accent2);
+}
     </style>
 </head>
 <body>
@@ -708,16 +719,28 @@ transform:translateY(0);
             return;
         }
         noTopicsEl.style.display = 'none';
+        
         topics.forEach((t, idx)=>{
-            const card = document.createElement('div'); card.className='card';
+            const card = document.createElement('div'); 
+            card.className = 'card';
+            card.setAttribute('draggable', 'true'); // Kích hoạt tính năng kéo
+            card.dataset.index = idx; // Lưu vị trí hiện tại của card
+
+            // --- Gắn các sự kiện Kéo Thả ---
+            card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragover', handleDragOver);
+            card.addEventListener('dragleave', handleDragLeave);
+            card.addEventListener('drop', handleDrop);
+            card.addEventListener('dragend', handleDragEnd);
+
             const h = document.createElement('h3'); h.textContent = t.title;
             const meta = document.createElement('div'); meta.className='meta'; meta.textContent = t.words.length + ' từ';
-            const btnGroup = document.createElement('div'); btnGroup.style.marginTop='6px'; btnGroup.style.display='flex'; btnGroup.style.gap='8px'; btnGroup.style.flexWrap='wrap';
+            
+            const btnGroup = document.createElement('div'); 
+            btnGroup.style.marginTop='12px'; btnGroup.style.display='flex'; btnGroup.style.gap='8px'; btnGroup.style.flexWrap='wrap';
             
             const openBtn = document.createElement('button'); openBtn.textContent='Mở'; openBtn.onclick = ()=>openTopic(idx);
             const editBtn = document.createElement('button'); editBtn.textContent='Sửa'; editBtn.className='secondary'; editBtn.onclick = ()=>openEditModal(idx);
-            const downloadWordBtn = document.createElement('button'); downloadWordBtn.textContent='Tải Word'; downloadWordBtn.className='secondary'; downloadWordBtn.onclick = ()=>downloadWord(idx);
-            const downloadJsonBtn = document.createElement('button'); downloadJsonBtn.textContent='Tải JSON'; downloadJsonBtn.className='secondary'; downloadJsonBtn.onclick = ()=>exportSingleTopic(idx);
             const delBtn = document.createElement('button'); delBtn.textContent='Xóa'; delBtn.className='delete'; delBtn.onclick = ()=>{ 
                 if(confirm(`Xóa chủ đề "${t.title}"?`)){ 
                     topics.splice(idx,1); saveTopics(); renderTopics(); lessonArea.innerHTML=''; 
@@ -726,15 +749,63 @@ transform:translateY(0);
             
             btnGroup.appendChild(openBtn); 
             btnGroup.appendChild(editBtn); 
-            btnGroup.appendChild(downloadWordBtn); 
-            btnGroup.appendChild(downloadJsonBtn);
             btnGroup.appendChild(delBtn);
             
-            card.appendChild(h); card.appendChild(meta); card.appendChild(btnGroup);
+            card.appendChild(h); 
+            card.appendChild(meta); 
+            card.appendChild(btnGroup);
             topicsEl.appendChild(card);
-        })
-    }
+    });
+}
 
+let dragSrcIndex = null;
+
+function handleDragStart(e) {
+    dragSrcIndex = this.dataset.index;
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Đặt hình ảnh thu nhỏ khi kéo (tùy chọn)
+    e.dataTransfer.setData('text/plain', dragSrcIndex);
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault(); // Cần thiết để cho phép thả
+    }
+    this.classList.add('drag-over');
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDragLeave() {
+    this.classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation(); // Ngăn trình duyệt mở link nếu có
+    }
+    
+    const targetIndex = this.dataset.index;
+    
+    if (dragSrcIndex !== targetIndex) {
+        // Tráo đổi vị trí phần tử trong mảng topics
+        const draggedItem = topics.splice(dragSrcIndex, 1)[0];
+        topics.splice(targetIndex, 0, draggedItem);
+        
+        // Lưu vào localStorage và render lại giao diện
+        saveTopics();
+        renderTopics();
+    }
+    return false;
+}
+
+function handleDragEnd() {
+    this.classList.remove('dragging');
+    // Đảm bảo xóa bỏ class hiệu ứng ở tất cả các card
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(card => card.classList.remove('drag-over'));
+}
     // --- LOGIC XỬ LÝ PHÍM MŨI TÊN TRONG MODAL INPUT (GIỮ NGUYÊN) ---
     function handleModalKeydown(e) {
         // Chỉ xử lý các phím mũi tên
