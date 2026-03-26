@@ -711,7 +711,7 @@ transform:translateY(0);
     }
 
 
-    // --- RENDER VÀ QUẢN LÝ CHỦ ĐỀ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ---  akirakha's web
+ // --- RENDER VÀ QUẢN LÝ CHỦ ĐỀ ---
     function renderTopics(){
         topicsEl.innerHTML = '';
         if(!topics.length){
@@ -746,18 +746,25 @@ transform:translateY(0);
                     topics.splice(idx,1); saveTopics(); renderTopics(); lessonArea.innerHTML=''; 
                 }
             }
+
+            // --- THÊM NÚT TẢI JSON TẠI ĐÂY ---
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = 'Tải JSON';
+            downloadBtn.className = 'secondary'; // Dùng style secondary (màu xám) cho hài hòa
+            downloadBtn.style.background = '#4b5563'; // Thêm màu xám đậm để khác biệt với nút Sửa
+            downloadBtn.onclick = () => exportSingleTopic(idx); // Gọi hàm tải lẻ có sẵn trong file index.html
             
             btnGroup.appendChild(openBtn); 
             btnGroup.appendChild(editBtn); 
             btnGroup.appendChild(delBtn);
+            btnGroup.appendChild(downloadBtn); // Gắn nút vào nhóm
             
             card.appendChild(h); 
             card.appendChild(meta); 
             card.appendChild(btnGroup);
             topicsEl.appendChild(card);
-    });
-}
-
+        });
+    }
 let dragSrcIndex = null;
 
 function handleDragStart(e) {
