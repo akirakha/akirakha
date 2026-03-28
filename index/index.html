@@ -1404,203 +1404,136 @@ function startStudyMode(topicIndex, isRandom = false){
 }
 
     // PRACTICE MODE (Ô 2 - CÓ RANDOM) 
-    function startPracticeMode(topicIndex, isRandom = false){ // THÊM isRandom
+    // PRACTICE MODE (PHIÊN BẢN MỚI: KHEN/KHỊA + PHÍM TẮT)
+    function startPracticeMode(topicIndex, isRandom = false) {
         const topic = topics[topicIndex];
-        // Chỉ luyện viết những từ CÓ TỪ TIẾNG ANH (dùng làm đáp án)
-        let wordsToPractice = topic.words.filter(w => w.en.trim() !== ''); // Dùng let
+        let wordsToPractice = topic.words.filter(w => w.en.trim() !== '');
         
-        // LOGIC RANDOM HÓA
         if (isRandom) {
-            wordsToPractice = shuffleArray(wordsToPractice);
+            wordsToPractice = shuffleArray([...wordsToPractice]);
         }
         
-        if(!wordsToPractice.length){ alert('Chủ đề không có từ tiếng Anh nào để luyện viết.'); openTopic(topicIndex); return; }
+        if (!wordsToPractice.length) { 
+            alert('Chủ đề không có từ tiếng Anh nào để luyện viết.'); 
+            openTopic(topicIndex); 
+            return; 
+        }
 
         let i = 0;
         let correctCount = 0;
-        // *** THÊM MỚI: Mảng lưu trữ các từ bị sai ***
         let mistakes = []; 
-        // **********************************************
-        
-        const container = document.createElement('div'); container.className='lesson';
-        const contentDiv = document.createElement('div'); contentDiv.className='lesson-content'; 
 
-        // CẬP NHẬT TIÊU ĐỀ
+        const container = document.createElement('div'); container.className = 'lesson';
+        const contentDiv = document.createElement('div'); contentDiv.className = 'lesson-content'; 
+
         const title = document.createElement('h3'); 
         title.textContent = topic.title + (isRandom ? ' — Luyện viết (Ngẫu nhiên)' : ' — Luyện viết chính tả');
         
-        // Sử dụng DIV cho visual slot để có thể chứa cả IMG hoặc TEXT
-        const visualSlot = document.createElement('div'); 
-        visualSlot.className='thumb'; 
+        const visualSlot = document.createElement('div'); visualSlot.className = 'thumb'; 
+        const viMeaning = document.createElement('div'); viMeaning.className = 'visible-meaning'; 
         
-        // Đã thay đổi: Tạo div hiển thị nghĩa luôn, dùng class mới cho style đậm
-        const viMeaning = document.createElement('div'); 
-        viMeaning.className='visible-meaning'; 
-        viMeaning.textContent='Nghĩa: (Đang tải...)'; // Placeholder
-        
-        const input = document.createElement('input'); input.type='text'; input.placeholder='Gõ chính tả từ tiếng Anh ở đây';
-        
-        const checkBtn = document.createElement('button'); checkBtn.textContent='Kiểm tra';
-        const nextBtn = document.createElement('button'); nextBtn.textContent='Từ tiếp theo'; nextBtn.disabled = true;
-        const status = document.createElement('div'); status.className='status';
-        const score = document.createElement('div'); score.className='mini'; 
+        const input = document.createElement('input'); 
+        input.type = 'text'; 
+        input.placeholder = 'Gõ từ tiếng Anh (Enter để check, Space để Next)';
+        input.style.width = '100%';
 
-        function render(){
+        const checkBtn = document.createElement('button'); checkBtn.textContent = 'Kiểm tra';
+        const nextBtn = document.createElement('button'); nextBtn.textContent = 'Từ tiếp theo'; nextBtn.disabled = true;
+        
+        const status = document.createElement('div'); status.className = 'status';
+        const score = document.createElement('div'); score.className = 'mini'; 
+
+        function render() {
             const w = wordsToPractice[i];
-            
-            // 1. Logic Hiện ảnh/nghĩa ở slot
-            visualSlot.innerHTML = ''; // Clear content
-            const hasImage = !!w.img;
-
-            if (hasImage) {
-                // Có ảnh: Chèn <img> vào slot
+            visualSlot.innerHTML = '';
+            if (w.img) {
                 const img = document.createElement('img');
                 img.src = w.img;
                 visualSlot.appendChild(img);
             } else {
-                // Không có ảnh: Hiện nghĩa tiếng Việt thay cho ảnh
-                visualSlot.textContent = w.vi || '(Không có nghĩa tiếng Việt)';
+                visualSlot.textContent = w.vi || '(Không có nghĩa)';
             }
 
-            // 2. Hiện nghĩa tiếng Việt DƯỚI slot (luôn hiện và in đậm)
-            const meaningText = w.vi || '(Không có nghĩa tiếng Việt)';
-            viMeaning.textContent = `Nghĩa: ${meaningText}`;
-
+            viMeaning.textContent = `Nghĩa: ${w.vi || '???'}`;
             input.value = '';
-            status.textContent = '';
             input.disabled = false;
+            status.textContent = '';
             checkBtn.disabled = false;
             nextBtn.disabled = true;
-
-            score.textContent = `Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i+1}/${wordsToPractice.length}`;
-            input.focus();
+            score.textContent = `Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i + 1}/${wordsToPractice.length}`;
+            
+            setTimeout(() => input.focus(), 50);
         }
-        
-        // Đã loại bỏ nút revealViBtn
-        
-        checkBtn.onclick = ()=>{
+
+        checkBtn.onclick = () => {
             const w = wordsToPractice[i];
             const answer = input.value.trim().toLowerCase();
-            const target = (w.en||'').trim().toLowerCase();
+            const target = (w.en || '').trim().toLowerCase();
 
-            // *** THÊM LOGIC KIỂM TRA INPUT RỖNG ĐỂ HỖ TRỢ ENTER ***
-            if(!answer){ 
-                alert('Nhập đáp án trước khi kiểm tra'); 
-                return; 
-            }
-            // *******************************************************
-            
-            if(answer === target){ 
-                status.textContent = 'great'; 
-                correctCount++; 
-                // Phát âm khi đúng
-                if (w.en) speakWord(w.en); 
-            }
-            else { 
-                status.textContent = `Sai — Đáp án đúng: **${w.en}**`; 
-                // *** THÊM MỚI: Ghi lại từ bị sai nếu chưa có trong danh sách mistakes ***
-                // Dùng .en làm key để tránh thêm trùng lặp (ví dụ: người dùng cố ý nhập sai 2 lần)
-                if(!mistakes.find(m => m.en === w.en)) {
+            if (!answer) return;
+
+            if (answer === target) {
+                const successMsgs = ['Great!', 'Quá đỉnh!', 'Đúng rồi nhé!', 'Xịn xò!', 'Chuẩn luôn!'];
+                status.textContent = successMsgs[Math.floor(Math.random() * successMsgs.length)];
+                status.style.color = "#4ade80";
+                correctCount++;
+                if (w.en) speakWord(w.en);
+            } else {
+                const failMsgs = ['Sai rồi gà ơi!', 'Học hành kiểu gì thế?', 'Còn non lắm!', 'Sai bét nhè!', 'Cố mà nhớ đi!'];
+                const randomFail = failMsgs[Math.floor(Math.random() * failMsgs.length)];
+                status.innerHTML = `<span style="color: #ef4444">${randomFail}</span> — Đáp án: <strong>${w.en}</strong>`;
+                if (!mistakes.find(m => m.en === w.en)) {
                     mistakes.push(w);
                 }
-                // *************************************************************************
             }
-            
-            input.disabled = true; 
+
+            input.disabled = true;
             checkBtn.disabled = true;
             nextBtn.disabled = false;
+            score.textContent = `Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i + 1}/${wordsToPractice.length}`;
+        };
 
-            // Cập nhật điểm ngay lập tức
-            score.textContent = `Đúng: ${correctCount} / ${wordsToPractice.length} - Từ ${i+1}/${wordsToPractice.length}`;
-        }
-        
-        // CẬP NHẬT LOGIC KẾT THÚC BÀI LUYỆN TẬP
-        nextBtn.onclick = ()=>{
-            if(i < wordsToPractice.length-1){ 
-                i++; render(); 
+        nextBtn.onclick = () => {
+            if (i < wordsToPractice.length - 1) {
+                i++;
+                render();
             } else {
-                // *** Logic kết thúc bài luyện tập (Thêm tùy chọn ôn lại câu sai) ***
-                const totalWords = wordsToPractice.length;
-                const finalScore = correctCount;
-                const totalMistakes = mistakes.length;
-                
-                let message = `Bạn đã hoàn thành luyện viết. Điểm cuối cùng: ${finalScore}/${totalWords}.`;
-                if (totalMistakes > 0) {
-                    message += `\nBạn đã sai ${totalMistakes} từ.`;
-                }
-                
-                // Cập nhật text option 1 để phản ánh chế độ
-                let options = `1. Ôn lại từ đầu (tất cả từ) [${isRandom ? 'Ngẫu nhiên' : 'Thứ tự'}]\n`; 
-                if (totalMistakes > 0) {
-                    options += `2. Ôn lại ${totalMistakes} từ bị sai\n`;
-                }
-                options += '3. Về trang chủ chủ đề';
-                
-                const choice = prompt(`${message}\nVui lòng chọn hành động (nhập số 1, 2, hoặc 3):\n\n${options}`);
-
-                switch (choice) {
-                    case '1':
-                        // 1. Ôn lại từ đầu - Truyền lại cờ random
-                        startPracticeMode(topicIndex, isRandom); 
-                        break;
-                    case '2':
-                        if (totalMistakes > 0) {
-                            // 2. Ôn lại câu sai - KHÔNG RANDOM, luôn theo thứ tự mistakes để dễ ôn
-                            startPracticeModeMistakes(topicIndex, mistakes, false); 
-                            break;
-                        }
-                        // Nếu người dùng chọn 2 nhưng không có lỗi, chuyển về trang chủ (fallback)
-                    case '3':
-                    default:
-                        // 3. Về trang chủ
-                        openTopic(topicIndex);
-                        break;
-                }
-                // *************************************************************************
+                const msg = `Hoàn thành! Điểm: ${correctCount}/${wordsToPractice.length}.`;
+                let options = "1. Ôn lại từ đầu\n2. Ôn lại câu sai\n3. Thoát";
+                const choice = prompt(`${msg}\n\n${options}`);
+                if (choice === '1') startPracticeMode(topicIndex, isRandom);
+                else if (choice === '2' && mistakes.length > 0) startPracticeModeMistakes(topicIndex, mistakes, false);
+                else openTopic(topicIndex);
             }
-        }
-        
-        // *** ĐÃ SỬA: Logic Enter để Check VÀ Phím cách để Next ***
+        };
+
         input.addEventListener('keydown', (e) => {
-            // Ngăn hành vi Enter mặc định (gửi form)
             if (e.key === 'Enter') {
-                e.preventDefault(); 
-                if (!checkBtn.disabled) {
-                    // Enter lần 1: Check đáp án (chỉ khi input không rỗng)
-                    if (input.value.trim() !== '') {
-                        checkBtn.click();
-                    }
-                }
-            } else if (e.key === ' ') { 
-                 // Phím cách: Dùng để Next (chỉ khi đã check và nextBtn khả dụng)
-                 if (!nextBtn.disabled) {
-                    e.preventDefault(); // Ngăn nhập ký tự khoảng trắng vào input
-                    nextBtn.click();
-                }
+                e.preventDefault();
+                if (!checkBtn.disabled && input.value.trim() !== '') checkBtn.click();
+                else if (!nextBtn.disabled) nextBtn.click();
+            } else if (e.key === ' ' && !nextBtn.disabled) {
+                e.preventDefault();
+                nextBtn.click();
             }
         });
-        // ********************************************
 
-        contentDiv.appendChild(title); 
-        contentDiv.appendChild(visualSlot); 
-        contentDiv.appendChild(viMeaning); // ĐÃ THAY ĐỔI: Thêm nghĩa hiện luôn
+        contentDiv.append(title, visualSlot, viMeaning);
+        const practiceDiv = document.createElement('div');
+        practiceDiv.className = 'practice';
+        practiceDiv.style.marginTop = '12px';
         
-        // Đã loại bỏ hàng controls cũ
-        
-        const practiceDiv = document.createElement('div'); practiceDiv.className='practice'; practiceDiv.style.marginTop='12px'; 
-        practiceDiv.appendChild(input);
-        
-        const prRow = document.createElement('div'); prRow.className='controls-row'; prRow.style.marginTop='8px'; 
-        prRow.appendChild(checkBtn); prRow.appendChild(nextBtn);
-        
-        practiceDiv.appendChild(prRow); 
-        practiceDiv.appendChild(status); 
-        practiceDiv.appendChild(score);
-        
+        const prRow = document.createElement('div');
+        prRow.className = 'controls-row';
+        prRow.append(checkBtn, nextBtn);
+
+        practiceDiv.append(input, prRow, status, score);
         contentDiv.appendChild(practiceDiv);
-        container.appendChild(contentDiv); 
-        lessonArea.innerHTML=''; 
+        container.appendChild(contentDiv);
+
+        lessonArea.innerHTML = '';
         lessonArea.appendChild(container);
+
         render();
     }
 
